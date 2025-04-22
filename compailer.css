@@ -1,41 +1,232 @@
-body{
-    background-color: rgb(149, 231, 116);
-    color: white;
-    display: block;
-    align-items: center;
-    justify-content: center;
-    margin-left: 30%;
-	margin-top: 10%;
-	margin-bottom: 30%;
-	max-height: 10vh;
-	max-width: 30vh;
-}
 
- #runbtn{
-	box-shadow:inset 0px 1px 0px 0px #f29c93;
-	background:linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%);
-	background-color:#fe1a00;
-	border-radius:6px;
-	border:1px solid #d83526;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #b23e35;
-}
-#runbtn:hover {
-	background:linear-gradient(to bottom, #ce0100 5%, #fe1a00 100%);
-	background-color:#ce0100;
-}
-#runbtn:active {
-	position:relative;
-	top:1px;
-}
-textarea{
-	background-color: black;
+:root {
+	--primary: #2962ff;
+	--primary-dark: #0039cb;
+	--secondary: #00c853;
+	--dark: #263238;
+	--light: #f5f5f5;
+	--gray: #90a4ae;
+	--editor-bg: #1e1e1e;
+	--output-bg: #263238;
+	--border-radius: 6px;
+	--shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	--transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  
+  body {
+	font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+	background-color: #f5f7fa;
+	margin: 0;
+	padding: 2rem;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: var(--dark);
+  }
+  
+  #input {
+	width: 100%;
+	max-width: 800px;
+	min-height: 300px;
+	padding: 1.5rem;
+	font-family: 'Consolas', 'Courier New', monospace;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: #e0e0e0;
+	background-color: var(--editor-bg);
+	border: 2px solid rgba(41, 98, 255, 0.2);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow);
+	resize: vertical;
+	transition: var(--transition);
+	tab-size: 2;
+  }
+  
+  #input:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.2);
+  }
+  
+  #runbtn {
+	margin: 1.5rem 0;
+	padding: 0.75rem 2rem;
+	background-color: var(--primary);
 	color: white;
-}
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: var(--transition);
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
+  }
+  
+  #runbtn:hover {
+	background-color: var(--primary-dark);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(41, 98, 255, 0.4);
+  }
+  
+  #runbtn:active {
+	transform: translateY(0);
+  }
+  
+  #runbtn::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 5px;
+	height: 5px;
+	background: rgba(255, 255, 255, 0.5);
+	opacity: 0;
+	border-radius: 100%;
+	transform: scale(1, 1) translate(-50%, -50%);
+	transform-origin: 50% 50%;
+  }
+  
+  #runbtn:focus:not(:active)::after {
+	animation: ripple 0.6s ease-out;
+  }
+  
+  @keyframes ripple {
+	0% {
+	  transform: scale(0, 0);
+	  opacity: 0.5;
+	}
+	100% {
+	  transform: scale(20, 20);
+	  opacity: 0;
+	}
+  }
+  
+  #output {
+	width: 100%;
+	max-width: 800px;
+	min-height: 150px;
+	padding: 1.5rem;
+	background-color: var(--output-bg);
+	border-radius: var(--border-radius);
+	color: #e0e0e0;
+	font-family: 'Consolas', 'Courier New', monospace;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: var(--shadow);
+	animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to { opacity: 1; transform: translateY(0); }
+  }
+  
+  
+  .status-indicator {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 1rem;
+	font-size: 0.85rem;
+	color: var(--gray);
+  }
+  
+  .status-dot {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	margin-right: 6px;
+	background: var(--secondary);
+	animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+	0% { opacity: 1; }
+	50% { opacity: 0.3; }
+	100% { opacity: 1; }
+  }
+  
+  
+  @media (max-width: 768px) {
+	body {
+	  padding: 1rem;
+	}
+	
+	#input, #output {
+	  width: calc(100% - 2rem);
+	  margin: 0 1rem;
+	}
+	
+	#runbtn {
+	  width: 100%;
+	  margin: 1rem 0;
+	  padding: 0.85rem;
+	}
+  }
+  
+  
+  .input-container {
+	position: relative;
+	width: 100%;
+	max-width: 800px;
+	margin-bottom: 1rem;
+  }
+  
+  .input-label {
+	position: absolute;
+	top: -10px;
+	left: 15px;
+	padding: 0 5px;
+	background: white;
+	color: var(--primary);
+	font-size: 0.8rem;
+	font-weight: 600;
+	border-radius: 3px;
+	z-index: 1;
+	transform-origin: left center;
+	transition: var(--transition);
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.1);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.3);
+  }
+  
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+  
+  .loading::after {
+	content: '';
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 10px;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	border-top-color: white;
+	animation: spin 1s ease-in-out infinite;
+	vertical-align: middle;
+  }
